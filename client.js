@@ -15,14 +15,15 @@ define([
         offline: false
     });
     
-    var updateConfigurationsMenu = function(force_refresh) {
+    // TODO: Quick & dirty workaround, must clean this
+    manager.updateConfigurationsMenu = function(force_refresh) {
         manager.forAll(force_refresh, function(name, is_active, cmds) {
             return  {
                         title: name,
                         flags: (is_active ? "active" : ""),
                         action: function() {
                             manager.setActive(this.attributes.title);
-                            updateConfigurationsMenu(false);
+                            manager.updateConfigurationsMenu(false);
                         }
                     };
         }).then(function(data) {
@@ -36,15 +37,15 @@ define([
         {
             title: "Manage configurations",
             action: function() {
-                dialogs.open(ConfigurationDialog, { "manager": manager }).fin(function(close) {
-                    updateConfigurationsMenu(true);
+                dialogs.open(ConfigurationDialog, { "manager": manager }).fail(function(close) {
+                    manager.updateConfigurationsMenu(true);
                 });
             }
         },
         {
             title: "Refresh configurations",
             action: function() {
-                updateConfigurationsMenu(true);
+                manager.updateConfigurationsMenu(true);
             }
         },
         conf_menu
@@ -57,5 +58,5 @@ define([
         }
     ]);
     
-    updateConfigurationsMenu(true);
+    manager.updateConfigurationsMenu(true);
 });

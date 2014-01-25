@@ -161,6 +161,7 @@ define([
             
             // And this one will save all the cache file to the server
             loading.show(this.manager.save(), "Saving configuration").fin(function() {
+                that.manager.updateConfigurationsMenu(true);
                 that.close();
             });
         },
