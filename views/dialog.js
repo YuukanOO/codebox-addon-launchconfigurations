@@ -30,7 +30,7 @@ define([
         _renderAndSelect: function(conf_name) {
             var that = this;
             
-            that.render().then(function(ok) {
+            this.render().then(function(ok) {
                 if(!conf_name || conf_name === null) {
                     that.$("#launchconf-select").change();
                 }
@@ -149,9 +149,12 @@ define([
          * Save the configuration.
          */
         saveConfiguration: function(e) {
-            if (e) e.preventDefault();
-            
             var that = this;
+            
+            if (e !== null) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
             
             // Save the current configuration
             this._saveCurrentConfigurationInCache();
