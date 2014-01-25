@@ -40,6 +40,9 @@ define([
             });
         },
         
+        /**
+         * Save the current configuration in the manager cache.
+         */
         _saveCurrentConfigurationInCache: function() {
             var conf_name = this.$("#launchconf-select option:selected").val();
             var conf_cmds = this.$("#launchconf-commands").val().split('\n');
