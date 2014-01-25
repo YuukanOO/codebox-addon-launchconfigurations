@@ -68,7 +68,7 @@ LaunchConfService.prototype.launch = function(args) {
         var cmds = that.confs[args.name];
         shell_id = "launch:" + _.escape(args.name);
         
-        return that.shells.createShellCommand(shell_id, cmds.join(' && '));
+        return Q(that.shells.createShellCommand(shell_id, cmds.join(' && ')));
     }).then(function(shell) {
         return  {
             'shell_id': shell_id
