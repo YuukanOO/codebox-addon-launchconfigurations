@@ -64,16 +64,15 @@ LaunchConfService.prototype.launch = function(args) {
     var shell_id = -1;
     
     return this._read().then(function(ok) {
-        if(args.name && _.has(that.confs, args.name)) {
-            var cmds = that.confs[args.name];
-            
-            shell_id = "launch-configuration";
-            var shell = that.shells.createShellCommand(shell_id, cmds.join(' && '));
-        }
+        if(!args.name || !_.has(that.confs, args.name)) throw new Error("Invalid arguments");
+        var cmds = that.confs[args.name];
+        shell_id = "launch-configuration";
         
+        return that.shells.createShellCommand(shell_id, cmds.join(' && '));
+    }).then(function(shell) {
         return  {
-                    'shell_id': shell_id
-                };
+            'shell_id': shell_id
+        };
     });
 };
 

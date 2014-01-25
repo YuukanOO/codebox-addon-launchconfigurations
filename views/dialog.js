@@ -47,7 +47,7 @@ define([
             var conf_name = this.$("#launchconf-select option:selected").val();
             var conf_cmds = this.$("#launchconf-commands").val().split('\n');
             
-            if(conf_name.length === 0) {
+            if(!conf_name) {
                 return;
             }
             
@@ -129,7 +129,7 @@ define([
             // And load commands for the new value
             var conf_name = e.currentTarget.value;
             
-            if(conf_name.length === 0) {
+            if(!conf_name) {
                 return;
             }
             
