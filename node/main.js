@@ -66,7 +66,7 @@ LaunchConfService.prototype.launch = function(args) {
     return this._read().then(function(ok) {
         if(!args.name || !_.has(that.confs, args.name)) throw new Error("Invalid arguments");
         var cmds = that.confs[args.name];
-        shell_id = "launch-configuration";
+        shell_id = "launch:" + _.escape(args.name);
         
         return that.shells.createShellCommand(shell_id, cmds.join(' && '));
     }).then(function(shell) {
