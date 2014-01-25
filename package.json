@@ -1,0 +1,29 @@
+{
+    "name": "jl.launch.configurations",
+    "version": "0.1.0",
+    "title": "Launch configurations",
+    "description": "Launch configurations addon for CodeBox",
+    "homepage": "https://github.com/YuukanOO/codebox-addon-launchconfigurations",
+    "license": "Apache",
+    "author": {
+        "name": "Julien Leicher",
+        "email": "jleicher@gmail.com",
+        "url": "http://julien.leicher.me"
+    },
+    "main": "./node/main",
+    "dependencies": {
+        "q": "1.0.0",
+        "underscore": "1.4.4"
+    },
+    "plugin": {
+        "provides": [],
+        "consumes": [
+            "rpc",
+            "workspace",
+            "shells"
+        ]
+    },
+    "client": {
+        "main": "client"
+    }
+}
