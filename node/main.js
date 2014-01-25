@@ -68,7 +68,7 @@ LaunchConfService.prototype.launch = function(args) {
             var cmds = that.confs[args.name];
             
             shell_id = "launch-configuration";
-            var shell = that.shells.createShellCommand(shell_id, cmds.join(' & '));
+            var shell = that.shells.createShellCommand(shell_id, cmds.join(' && '));
         }
         
         return  {

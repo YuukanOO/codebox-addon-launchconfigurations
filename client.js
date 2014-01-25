@@ -36,8 +36,9 @@ define([
         {
             title: "Manage configurations",
             action: function() {
-                dialogs.open(ConfigurationDialog, { "manager": manager }).then(function(close) {
+                dialogs.open(ConfigurationDialog, { "manager": manager }).fin(function(close) {
                     updateConfigurationsMenu(true);
+                    console.log("closed");
                 });
             }
         },
