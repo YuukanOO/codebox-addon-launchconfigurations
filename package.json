@@ -1,6 +1,6 @@
 {
     "name": "jl.launch.configurations",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "title": "Launch configurations",
     "description": "Launch configurations addon for CodeBox",
     "homepage": "https://github.com/YuukanOO/codebox-addon-launchconfigurations",
