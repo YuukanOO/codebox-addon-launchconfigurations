@@ -61,9 +61,7 @@ define([], function() {
         rpc.execute("launchconf/launch", {
             'name': this._active_configuration
         }).then(function(data) {
-            if(data.shell_id != -1) {
-                Command.run("terminal.open", data.shell_id);
-            }
+            Command.run("terminal.open", data.shell_id);
         });
     };
     
