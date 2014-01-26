@@ -65,7 +65,7 @@ define([
             this.manager = options.manager;
 
             this.manager.getAll().then(function(data) {
-                that._renderAndSelect();
+                that._renderAndSelect(that.manager.getActive());
             });
 
             return this;
@@ -183,7 +183,7 @@ define([
             
             this.previous_conf_name = null;
             
-            dialogs.confirm("Remove configuration", "Do you really want to delete " + _.escape(conf_name) + "?")
+            dialogs.confirm("Remove configuration", "Do you really want to delete &laquo; " + _.escape(conf_name) + " &raquo;?")
             .then(function(ok) {
                 that.manager.delete(conf_name);
                 that._renderAndSelect();

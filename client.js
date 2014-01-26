@@ -15,7 +15,6 @@ define([
         offline: false
     });
     
-    // TODO: Quick & dirty workaround, must clean this
     manager.updateConfigurationsMenu = function(force_refresh) {
         manager.forAll(force_refresh, function(name, is_active, cmds) {
             return  {
@@ -37,9 +36,7 @@ define([
         {
             title: "Manage configurations",
             action: function() {
-                dialogs.open(ConfigurationDialog, { "manager": manager }).fail(function(close) {
-                    manager.updateConfigurationsMenu(true);
-                });
+                dialogs.open(ConfigurationDialog, { "manager": manager });
             }
         },
         {
