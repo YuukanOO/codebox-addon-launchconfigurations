@@ -1,28 +1,42 @@
 define([], function() {
     
     // Import needed stuff
-    var Q       = codebox.require("q");
-    var _       = codebox.require("underscore");
-    var rpc     = codebox.require("core/backends/rpc");
-    var Command = codebox.require("models/command");
+    var Q               = codebox.require("q");
+    var _               = codebox.require("underscore");
+    var rpc             = codebox.require("core/backends/rpc");
+    var Command         = codebox.require("models/command");
+    var user            = codebox.require("core/user");
+    var user_settings   = user.settings("jl_launch_configurations");
     
     function LaunchConfigurations () {
         this._confs = null;
-        this._active_configuration = null;
+        this._active_configuration = user_settings.get('active', null);
         
         _.bindAll(this);
     }
     
     // RPC + CRUD
-    LaunchConfigurations.prototype.getAll = function() {
+    LaunchConfigurations.prototype.getAll = function(refresh) {
         var d = Q.defer();
         var that = this;
-        this._confs = null;
         
-        rpc.execute("launchconf/all").then(function(data) {
-            that._confs = data;
-            d.resolve(that._confs);
-        }, d.reject);
+        refresh = typeof(refresh) === 'undefined' ? true : refresh;
+        
+        if(refresh === true) {
+            
+            this._confs = null;
+            
+            rpc.execute("launchconf/all").then(function(data) {
+                that._confs = data;
+                d.resolve(that._confs);
+            }, d.reject);
+            
+        }
+        else {
+            
+            d.resolve(this._confs);
+            
+        }
         
         return d.promise;
     };
@@ -70,34 +84,18 @@ define([], function() {
         var d = Q.defer();
         var that = this;
         
-        // TODO: Clean this
-        
-        if(force_refresh) {
-            this.getAll().then(function(confs) {
-                var res = [];
-                
-                for(var conf in confs) {
-                    if(that._active_configuration === null) {
-                        that._active_configuration = conf;
-                    }
-                    res.push(action(conf, (conf == that._active_configuration), confs[conf]));
-                }
-                
-                d.resolve(res);
-            }, d.reject);
-        }
-        else {
+        this.getAll(force_refresh).then(function(confs) {
             var res = [];
-                
-            for(var conf in that._confs) {
+            
+            for(var conf in confs) {
                 if(that._active_configuration === null) {
-                    that._active_configuration = conf;
+                    that.setActive(conf);
                 }
-                res.push(action(conf, (conf == that._active_configuration), that._confs[conf]));
+                res.push(action(conf, (conf == that._active_configuration), confs[conf]));
             }
             
             d.resolve(res);
-        }
+        }, d.reject);
         
         return d.promise;
     };
@@ -121,6 +119,10 @@ define([], function() {
     
     LaunchConfigurations.prototype.setActive = function(conf_name) {
         this._active_configuration = conf_name;
+        user_settings.set('active', this._active_configuration);
+        
+        // I am using RPC to avoid the "Saving settings" screen
+        rpc.execute("auth/settings", user.get('settings'));
     };
     
     return LaunchConfigurations;
