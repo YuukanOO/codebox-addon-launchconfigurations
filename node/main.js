@@ -19,7 +19,7 @@ LaunchConfService.prototype._parseMakefile = function(raw) {
     
     var lines = raw.split('\n');
     var current_line = null;
-    var current_conf = null;
+    var current_key = null;
     var confs = {};
     
     for(var i = 0; i < lines.length; i++) {
@@ -27,11 +27,11 @@ LaunchConfService.prototype._parseMakefile = function(raw) {
         current_line = lines[i];
         
         if(current_line.indexOf('\t') === 0) {
-            confs[current_conf].push(current_line.replace('\t', ''));
+            confs[current_key].push(current_line.replace('\t', ''));
         }
         else if(current_line.indexOf(':') != -1) {
             current_key = current_line.replace(':', '');
-            confs[current_conf] = [];
+            confs[current_key] = [];
         }
         
     }
@@ -49,6 +49,8 @@ LaunchConfService.prototype._stringifyMakefile = function(obj) {
         for(var i = 0; i < obj[c].length; i++) {
             content += '\t' + obj[c][i] + '\n';
         }
+        
+        content += '\n';
     }
     
     return content;

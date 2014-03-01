@@ -87,6 +87,8 @@ define([], function() {
         this.getAll(force_refresh).then(function(confs) {
             var res = [];
             
+            console.log(confs);
+            
             for(var conf in confs) {
                 if(that._active_configuration === null) {
                     that.setActive(conf);
